@@ -33,7 +33,6 @@
 
 ;; Syntax highlighting and related can be found in `hy-font-lock.el'
 ;; REPL support can be found in `hy-shell.el'
-;; IDE components support can be found in `hy-jedhy.el'
 ;; Common utilities and requires can be found in `hy-base.el'
 ;; Testing utilities for the test/ folder can be found in `hy-test.el'
 
@@ -46,7 +45,6 @@
 
 (require 'hy-font-lock)
 (require 'hy-shell)
-(require 'hy-jedhy)
 
 ;;; Configuration
 ;;;; Indentation
@@ -254,27 +252,6 @@ commands."
   (when (fboundp #'sp-local-pair)
     (sp-local-pair '(hy-mode inferior-hy-mode) "`" "`" :actions nil)))
 
-;;;; Jedhy
-
-(defun hy-mode--setup-jedhy ()
-  "Auto-start jedhy for company, eldoc, and other `hy-mode' IDE features."
-  (let ((hy-shell--notify?))
-    (run-jedhy))  ; Unlikely that jedhy installed globally so dont warn
-
-  (when (fboundp 'pyvenv-mode)
-    (add-hook 'pyvenv-post-activate-hooks #'run-jedhy)
-    (add-hook 'pyvenv-post-deactivate-hooks
-              #'run-jedhy--pyvenv-post-deactive-hook)))
-
-(defun hy-mode--support-company ()
-  "Support `company-mode' autocompletion."
-  (add-to-list 'company-backends #'company-hy))
-
-(defun hy-mode--support-eldoc ()
-  "Support `eldoc-mode' with lispy docstring leaders."
-  (setq-local eldoc-documentation-function #'hy-eldoc-documentation-function)
-  (eldoc-mode +1))
-
 ;;; hy-mode
 
 ;;;###autoload
@@ -287,17 +264,7 @@ commands."
   "Major mode for editing Hy files."
   (hy-mode--setup-font-lock)
   (hy-mode--setup-syntax)
-
-  (hy-mode--support-smartparens)
-
-  (when hy-jedhy--enable?
-    (hy-mode--setup-jedhy)
-
-    (hy-mode--support-eldoc)
-
-    (when (featurep 'company)
-      (hy-mode--support-company)
-      (add-hook 'inferior-hy-mode-hook #'hy-mode--support-company))))
+  (hy-mode--support-smartparens))
 
 ;;; Bindings
 

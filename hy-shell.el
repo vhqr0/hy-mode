@@ -25,8 +25,6 @@
 ;; This file implements `inferior-hy-mode', commands to send and get text
 ;; from Hy interpreters, and other repl components.
 
-;; See `hy-jedhy.el' which builds on these commands to support IDE components.
-
 ;;; Code:
 
 (require 'hy-base)
@@ -162,10 +160,7 @@
 
 ;; They are rewrites of some components of comint's redirection commands.
 ;; The redirection add-on for comint was developed to run SQL on a process
-;; with state. Similarly, we maintain state in jedhy's namespace. There
-;; are better, but more advanced, solutions. The one chosen should allow a
-;; pretty quick, and !easily testable!, integration of jedhy. It also allows
-;; some fancier things w.r.t shell output transformations and fontifying.
+;; with state.
 
 ;; The commands are rewritten because 1. we don't need all the options 2. we
 ;; require a timeout during the accept process output 3. we have some macros

@@ -5,21 +5,9 @@ An Emacs major mode for [[http://docs.hylang.org/en/stable/][Hy]], a lisp embedd
 Provides autocompletion, documentation lookup, and all features required to make
 developing in Hy enjoyable and productive.
 
-[[file:./img/jedhy.png]]
-
 ** Installation
 
 ~hy-mode~ is available in MELPA.
-
-IDE components like autocompletion via company-mode rely on ~jedhy~, which can
-be installed as standard with ~pip install jedhy~ in your virtual environment of
-choice, see [[https://github.com/ekaschalk/jedhy]].
-
-Jedhy should auto-start whenever it finds it.
-
-Currently, completing imported packages requires sending the
-imports/requires/sys.path.extend manually in the current buffer with ~M-x
-hy-jedhy-update-imports~.
 
 The precise features enabled are: ~company-mode~, ~eldoc-mode~, and
 ~hy-describe-thing-at-point~ for looking up docs of the symbol at point.
@@ -28,16 +16,13 @@ Spacemacs users - Hy has its own layer in its dev branch.
 
 ** Configuring
 
-Company/Eldoc support is enabled by default with ~hy-jedhy--enable?~.
-
 Indentation can be customized with ~hy-indent--exactly~ and ~hy-indent--fuzzily~.
 
 See ~hy-shell.el~ for configuring the shell.
 
 ** Raising Issues
 
-Please provide the version of Hy you are using. The last confirmed version of Hy
-jedhy is compatible with is: ~0.16.0~.
+Please provide the version of Hy you are using.
 
 The IDE features and management is feature-full but nascent. If you encounter
 issues please provide as much details as you can.

@@ -16,7 +16,6 @@
 ;;   - Startup/Teardown
 ;;   - Font Locks
 ;;   - Sending and getting from running processes
-;; - Jedhy (within Jedhy repo, not here)
 ;; - Misc
 ;;   - Form extraction
 
