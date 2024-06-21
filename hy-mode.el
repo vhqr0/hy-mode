@@ -2,6 +2,7 @@
 
 ;; Copyright © 2013 Julien Danjou <julien@danjou.info>
 ;;           © 2017-2019 Eric Kaschalk <ekaschalk@gmail.com>
+;;           © 2024 vhqr <zq_cmd@163.com>
 ;;
 ;; Authors: Julien Danjou <julien@danjou.info>
 ;;          Eric Kaschalk <ekaschalk@gmail.com>
@@ -52,10 +53,13 @@
 ;; See other files for configuring specific aspects of Hy, like the shell.
 
 (defvar hy-indent--exactly
-  '("when" "unless"
+  '("if" "when" "unless" "if-not" "when-not"
+    "cond" "cond->" "cond->>"
+    "loop"
     "for" "for*" "for/a" "for/a*"
     "while"
-    "except" "catch")
+    "except" "catch"
+    "match" "case")
   "Symbols that will have following lines indented +1 when matched.
 
 Examples:
