@@ -38,41 +38,57 @@
 
 (defconst hy-font-lock--hy-builtins
   '("*map"
+    "abc"
     "accumulate"
     "assoc"
+    "builtins"
     "butlast"
     "calling-module-name"
+    "cat"
     "chain"
     "coll?"
+    "collections"
+    "conj"
+    "contextlib"
     "combinations"
+    "comment"
     "comp"
     "complement"
     "compress"
+    "concat"
+    "cons"
     "constantly"
     "count"
+    "curry"
     "cut"
     "cycle"
+    "dataclasses"
     "dec"
+    "def"
+    "defarity"
     "defmain"
     "del"
     "disassemble"
+    "dissoc"
     "distinct"
-    "doto"
     "drop"
     "drop-last"
     "drop-while"
     "empty?"
     "even?"
     "every?"
+    "farity"
     "filter"
     "first"
     "flatten"
     "float?"
     "fraction"
+    "functools"
     "gensym"
     "get"
     "group-by"
     "identity"
+    "ignore"
     "inc"
     "instance?"
     "integer"
@@ -80,18 +96,21 @@
     "integer?"
     "interleave"
     "interpose"
+    "into"
     "is"
     "is-not"
     "islice"
     "iterable?"
     "iterate"
     "iterator?"
+    "itertools"
     "juxt"
     "keyword"
     "keyword?"
     "last"
     "macroexpand"
     "macroexpand-1"
+    "merge"
     "merge-with"
     "multicombinations"
     "name"
@@ -100,7 +119,11 @@
     "nth"
     "numeric?"
     "odd?"
+    "operator"
+    "partial"
     "partition"
+    "partition-all"
+    "partition-by"
     "permutations"
     "pos?"
     "product"
@@ -114,17 +137,29 @@
     "repeatedly"
     "rest"
     "second"
+    "select-keys"
+    "seq"
     "setv"
+    "sized-window"
+    "sized-window-all"
     "some"
+    "some?"
+    "split-at"
+    "split-with"
     "string"
     "string?"
     "symbol?"
     "take"
+    "take-last"
     "take-nth"
     "take-while"
     "tee"
+    "types"
+    "typing"
     "unquote"
     "unquote-splice"
+    "update"
+    "window"
     "xor"
     "zero?"
     "zip"
@@ -136,7 +171,9 @@
 
 (defconst hy-font-lock--python-builtins
   '("abs"
+    "aiter"
     "all"
+    "anext"
     "any"
     "ascii"
     "bytes"
@@ -173,9 +210,11 @@
     "list"
     "locals"
     "map"
+    "mapcat"
     "max"
     "memoryview"
     "min"
+    "match"
     "next"
     "object"
     "oct"
@@ -219,17 +258,25 @@
 
 (defconst hy-font-lock--exceptions
   '("ArithmeticError" "AssertionError" "AttributeError" "BaseException"
-    "DeprecationWarning" "EOFError" "EnvironmentError" "Exception"
-    "FloatingPointError" "FutureWarning" "GeneratorExit" "IOError" "ImportError"
-    "ImportWarning" "IndexError" "KeyError" "KeyboardInterrupt" "LookupError"
-    "MemoryError" "NameError" "NotImplementedError" "OSError" "OverflowError"
-    "PendingDeprecationWarning" "ReferenceError" "RuntimeError" "RuntimeWarning"
-    "StopIteration" "SyntaxError" "SyntaxWarning" "SystemError" "SystemExit"
-    "TypeError" "UnboundLocalError" "UnicodeDecodeError" "UnicodeEncodeError"
-    "UnicodeError" "UnicodeTranslateError" "UnicodeWarning" "UserWarning"
-    "VMSError" "ValueError" "Warning" "WindowsError" "ZeroDivisionError"
-    "BufferError" "BytesWarning" "IndentationError" "ResourceWarning"
-    "TabError")
+    "BufferError" "BytesWarning" "DeprecationWarning" "EOFError"
+    "EnvironmentError" "Exception" "FloatingPointError" "FutureWarning"
+    "GeneratorExit" "IOError" "ImportError" "ImportWarning"
+    "IndentationError" "IndexError" "KeyError" "KeyboardInterrupt"
+    "LookupError" "MemoryError" "NameError" "NotImplementedError"
+    "OSError" "OverflowError" "PendingDeprecationWarning"
+    "ReferenceError" "RuntimeError" "RuntimeWarning" "StopIteration"
+    "SyntaxError" "SyntaxWarning" "SystemError" "SystemExit" "TabError"
+    "TypeError" "UnboundLocalError" "UnicodeDecodeError"
+    "UnicodeEncodeError" "UnicodeError" "UnicodeTranslateError"
+    "UnicodeWarning" "UserWarning" "ValueError" "Warning"
+    "ZeroDivisionError"
+    "BlockingIOError" "BrokenPipeError" "ChildProcessError"
+    "ConnectionAbortedError" "ConnectionError" "ConnectionRefusedError"
+    "ConnectionResetError" "FileExistsError" "FileNotFoundError"
+    "InterruptedError" "IsADirectoryError" "NotADirectoryError"
+    "PermissionError" "ProcessLookupError" "RecursionError"
+    "ResourceWarning" "StopAsyncIteration" "TimeoutError"
+    "VMSError" "WindowsError")
   "Exception and error names.")
 
 ;;;; Definitions
@@ -239,16 +286,19 @@
     "defn" "defn/a"
 
     ;; Macros
-    "defmacro" "defmacro/g!" "defmacro!"
+    "defmacro" "defmacro/g!" "defmacro!" "delmacro"
 
     ;; Tag Macros
-    "deftag"
+    "deftag" "defreader"
 
     ;; Defining __main__
     "defmain"
 
     ;; Multi-methods
-    "defmulti" "defmethod")
+    "defmulti" "defmethod"
+
+    ;; Lazy sequences
+    "defseq")
   "Names in Hy that define functions, macros, etc.")
 
 ;;;; Operators
@@ -264,19 +314,21 @@
 (defconst hy-font-lock--special-names
   '(;; Looping
     "for" "for/a"
-    "dfor" "lfor" "sfor"  ; comprehensions
+    "dfor" "lfor" "sfor" "gfor" "cfor"  ; comprehensions
     "loop" "recur"  ; hy.contrib.loop
 
     ;; Threading
-    "->" "->>" "as->"
+    "->" "->>" "as->" "doto" "cond->" "cond->>" "some->" "some->>"
 
     ;; Flow control
     "return"
     "if" "if*" "if-not" "lif" "lif-not"
-    "else" "unless" "when"
+    "else" "unless" "when" "when-not"
     "break" "continue" "while"
     "cond"
     "do"
+    "case" "branch"
+    "ecase" "ebranch"
 
     ;; Functional
     "fn" "fn/a"
@@ -313,7 +365,9 @@
     "ap-map"
     "ap-map-when"
     "ap-reduce"
-    "ap-reject")
+    "ap-reject"
+    "ap-when"
+    "ap-with")
   "Hy anaphoric contrib keywords.")
 
 ;;; Keywords
