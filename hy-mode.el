@@ -78,7 +78,7 @@
     ;;; Quoting
     "quote" "quasiquote" "unquote" "unquote-splice"
     ;;; Assignment, mutation, and annotation
-    "setv" "setx" "let" "global" "nonlocal" "del" "annotate" "deftype"
+    "setv" "setx" "let" "global" "nonlocal" "del" "annotate" "#^" "deftype"
     ;; TODO: forget this?
     "local"
     ;;; Subsetting
@@ -212,6 +212,39 @@ _POINT and SYNTAX see `lisp-indent-line'."
       (current-column)
     (1+ (current-column))))
 
+;;;; Imenu
+
+(defun hy-match-next-def (regexp)
+  "Match next def by REGEXP."
+  (when (re-search-backward regexp nil t)
+    (save-excursion
+      (let ((point (point)))
+        (ignore-errors
+          (down-list))
+        (forward-sexp)
+        (skip-chars-forward " \t")
+        ;; skip decorators
+        (when (memq (following-char) '(?\( ?\[ ?\{))
+          (forward-sexp)
+          (skip-chars-forward " \t"))
+        ;; skip annotate
+        (when (looking-at "#^")
+          (forward-sexp 2)
+          (skip-chars-forward " \t"))
+        (when-let (def (bounds-of-thing-at-point 'symbol))
+          (cl-destructuring-bind (def-beg . def-end) def
+            (message (format "found %s" (buffer-substring def-beg def-end)))
+            (set-match-data (list def-beg def-end))
+            (goto-char point)))))))
+
+(defun hy-match-next-global-def ()
+  "Imenu global index function for `hy-mode'."
+  (hy-match-next-def "^(def"))
+
+(defun hy-match-next-local-def ()
+  "Imenu local index function for `hy-mode'."
+  (hy-match-next-def "^[ \t]+(def"))
+
 ;;;; Shell
 
 (defun hy-shell-send-setup-code ()
@@ -313,7 +346,11 @@ FUNC, START, END and ARGS see `python-shell-buffer-substring'."
 
   (setq-local indent-tabs-mode nil)
   (setq-local indent-line-function #'lisp-indent-line)
-  (setq-local lisp-indent-function #'hy-indent-function))
+  (setq-local lisp-indent-function #'hy-indent-function)
+
+  (setq-local imenu-generic-expression
+              '(("Local" hy-match-next-local-def 0)
+                ("Global" hy-match-next-global-def 0))))
 
 (set-keymap-parent hy-mode-map lisp-mode-shared-map)
 (define-key hy-mode-map (kbd "C-c C-p") #'run-python)
