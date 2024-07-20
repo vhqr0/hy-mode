@@ -233,7 +233,6 @@ _POINT and SYNTAX see `lisp-indent-line'."
           (skip-chars-forward " \t"))
         (when-let (def (bounds-of-thing-at-point 'symbol))
           (cl-destructuring-bind (def-beg . def-end) def
-            (message (format "found %s" (buffer-substring def-beg def-end)))
             (set-match-data (list def-beg def-end))
             (goto-char point)))))))
 
