@@ -2,7 +2,7 @@
 
 ;; Author: VHQR <zq_cmd@163.com>
 ;; Version: 1.0.0
-;; Package-Requires: ((emacs "28.1"))
+;; Package-Requires: ((emacs "29.1"))
 ;; Keywords: languages
 ;; URL: https://github.com/vhqr0/hy-mode
 
@@ -324,6 +324,22 @@ FUNC, START, END and ARGS see `python-shell-buffer-substring'."
   (hy-shell-send-string
    (format "(print (hy.repr (hy.macroexpand '%s)))" (thing-at-point 'sexp))))
 
+;;;; Keymap
+
+(defvar-keymap hy-mode-map
+  :doc "Keymap for `hy-mode'."
+  :parent lisp-mode-shared-map
+  "C-c C-p" #'run-python
+  "C-c C-z" #'python-shell-switch-to-shell
+  "C-c C-s" #'python-shell-send-string
+  "C-c C-r" #'python-shell-send-region
+  "C-c C-c" #'python-shell-send-buffer
+  "C-c C-e" #'python-shell-send-statement
+  "C-c C-l" #'python-shell-send-file
+  "C-M-x" #'python-shell-send-defun
+  "C-c RET" #'hy-shell-macroexpand
+  "C-c C-RET" #'hy-shell-macroexpand)
+
 ;;;; Major mode
 
 ;;;###autoload
@@ -350,18 +366,6 @@ FUNC, START, END and ARGS see `python-shell-buffer-substring'."
   (setq-local imenu-generic-expression
               '(("Local" hy-match-next-local-def 0)
                 ("Global" hy-match-next-global-def 0))))
-
-(set-keymap-parent hy-mode-map lisp-mode-shared-map)
-(define-key hy-mode-map (kbd "C-c C-p") #'run-python)
-(define-key hy-mode-map (kbd "C-c C-s") #'python-shell-send-string)
-(define-key hy-mode-map (kbd "C-c C-r") #'python-shell-send-region)
-(define-key hy-mode-map (kbd "C-c C-c") #'python-shell-send-buffer)
-(define-key hy-mode-map (kbd "C-c C-e") #'python-shell-send-statement)
-(define-key hy-mode-map (kbd "C-c C-l") #'python-shell-send-file)
-(define-key hy-mode-map (kbd "C-c C-z") #'python-shell-switch-to-shell)
-(define-key hy-mode-map (kbd "C-M-x") #'python-shell-send-defun)
-(define-key hy-mode-map (kbd "C-c RET") #'hy-shell-macroexpand)
-(define-key hy-mode-map (kbd "C-c C-RET") #'hy-shell-macroexpand)
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.hy\\'" . hy-mode))
