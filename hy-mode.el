@@ -1,7 +1,7 @@
 ;;; hy-mode.el --- Yet another major mode for Hylang -*- lexical-binding: t -*-
 
 ;; Author: VHQR <zq_cmd@163.com>
-;; Version: 1.0.0
+;; Version: 1.0.1
 ;; Package-Requires: ((emacs "29.1"))
 ;; Keywords: languages
 ;; URL: https://github.com/vhqr0/hy-mode
