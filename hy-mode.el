@@ -183,7 +183,7 @@ except Exception:
 
 (defconst hy-font-lock-keyword-keywords
   (list
-   (rx symbol-start ":" (1+ word))
+   (rx symbol-start ":" (1+ (not " ")) symbol-end)
    '(0 font-lock-constant-face))
   "Font lock keywords for Hylang keywords (starts with :).")
 
